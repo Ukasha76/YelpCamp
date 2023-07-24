@@ -1,5 +1,6 @@
+if(process.env.NODE_ENV!=='production'){
 require('dotenv').config();
-
+}
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -21,9 +22,9 @@ const MongoStore = require('connect-mongo')
 // const dbUrl= process.env.DB_URL;
 
 app.use(mongoSanitize());
-
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/firstapp'
 mongoose
-  .connect('mongodb://127.0.0.1:27017/firstapp')
+  .connect(dbUrl)
   .then(() => {
     console.log('Mongoose listening');
   })
@@ -33,7 +34,7 @@ mongoose
   });
   const secret = process.env.SECRET ||  'iamasecret'
 const store = new MongoStore({
-   mongoUrl:'mongodb://127.0.0.1:27017/firstapp',
+   mongoUrl:dbUrl,
    secret,
    touchAfter:24*60*60
 
@@ -98,7 +99,7 @@ app.use((err, req, res, next) => {
   if (!err.message) err.message = 'something wents wrong';
   res.status(statuscode).render('errortemplate', { err });
 });
-
-app.listen('3000', () => {
-  console.log('Listening on Port 3000');
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+  console.log(`Listening on Port ${port}`);
 });
