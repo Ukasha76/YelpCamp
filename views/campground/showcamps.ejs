@@ -1,0 +1,111 @@
+<% layout('layouts/boilerplate')%>
+  <div class="row">
+
+    <div class="col-6">
+    
+
+        
+      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <% camp.images.forEach((img,i)=>{ %>
+       
+          <div class="carousel-item <%= i===0? 'active' :'' %>" >
+            <img src="<%= img.url %>" class="d-block w-100 " alt="">
+          </div>
+          <% }) %>
+        </div>
+        <% if(camp.images.length>1) {%>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        <% } %>
+      </div>
+      
+
+       
+
+
+
+      <div class="card mb-3">
+        
+      
+            <div class="card-body">
+              <h5 class="card-title">
+
+                <%=camp.tittle%>
+              </h5>
+              <p class="card-text">
+                <%=camp.description %>
+              </p>
+            </div>
+
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-muted">
+                <%=camp.location %>
+
+              </li>
+              <li class="list-group-item text-muted">
+                <p> by <%= camp.author.username%>
+                </p>
+              </li>
+              <li class="list-group-item">$<%=camp.price %>/night</li>
+            </ul>
+            <% if(current_user && camp.author.equals(current_user)) {%>
+              <div class="card-body">
+                <a href="/campgrounds/<%=camp._id %>/edit" class="card-link"><button
+                    class="btn btn-info">Edit</button></a>
+                <form class="d-inline" action="/campgrounds/<%=camp._id %>/delete?_method=delete" method="post"> <button
+                    class="btn btn-danger">Delete</button> </form>
+              </div>
+              <% } %>
+
+
+      </div>
+
+    </div>
+
+
+
+    <div class="col-6">
+      <form action="/campgrounds/<%= camp._id %>/review" class="validate" novalidate method="post">
+        <div class="row mb-3">
+          <label for="customRange1" class="form-label">Range</label>
+          <input type="range" class="form-range" name="review[ratings]" id="customRange1" min="1" max="5">
+
+          <label for="review">Review</label>
+          <textarea name="review[body]" id="review" required></textarea>
+
+        </div>
+        <button class="btn btn-info">Post</button>
+      </form>
+
+
+
+      <% for(r of camp.reviews){ %>
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <h5 class="card-title">Ratings:<%=r.ratings %>
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">by <%= r.author.username %>
+            </h6>
+
+            <p class="card-text">Body:<%=r.body %>
+            </p>
+
+            <% if(current_user && r.author.equals(current_user)) {%>
+
+
+              <form action="/campgrounds/<%=camp._id %>/review/<%= r._id %>?_method=DELETE" method="post"><button
+                  class="btn btn-danger">Delete</button></form>
+
+
+              <% } %>
+          </div>
+        </div>
+        <% } %>
+    </div>
