@@ -1,6 +1,6 @@
-if(process.env.NODE_ENV!=='production'){
+
 require('dotenv').config();
-}
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -19,6 +19,7 @@ const ExpressError = require('./utilties/ExpressErrors');
 const mongoSanitize = require('express-mongo-sanitize');
 const { func } = require('joi');
 const MongoStore = require('connect-mongo')
+const port = process.env.PORT || 3000
 // const dbUrl= process.env.DB_URL;
 
 app.use(mongoSanitize());
@@ -99,7 +100,7 @@ app.use((err, req, res, next) => {
   if (!err.message) err.message = 'something wents wrong';
   res.status(statuscode).render('errortemplate', { err });
 });
-const port = process.env.PORT || 3000
+
 app.listen(port, () => {
   console.log(`Listening on Port ${port}`);
 });
