@@ -74,7 +74,7 @@
     <div class="col-6">
       <form action="/campgrounds/<%= camp._id %>/review" class="validate" novalidate method="post">
         <div class="row mb-3">
-          <label for="customRange1" class="form-label">Range</label>
+          <label for="customRange1" class="form-label">Rating</label>
           <input type="range" class="form-range" name="review[ratings]" id="customRange1" min="1" max="5">
 
           <label for="review">Review</label>
@@ -94,7 +94,7 @@
             <h6 class="card-subtitle mb-2 text-muted">by <%= r.author.username %>
             </h6>
 
-            <p class="card-text">Body:<%=r.body %>
+            <p class="card-text"><%=r.body %>
             </p>
 
             <% if(current_user && r.author.equals(current_user)) {%>
