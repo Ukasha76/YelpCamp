@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate')%>
+<link rel="stylesheet" href="/stylessheets/stars.css">
   <div class="row">
 
     <div class="col-6">
@@ -72,29 +73,52 @@
 
 
     <div class="col-6">
+    <% if(current_user){ %>
+
       <form action="/campgrounds/<%= camp._id %>/review" class="validate" novalidate method="post">
-        <div class="row mb-3">
-          <label for="customRange1" class="form-label">Rating</label>
-          <input type="range" class="form-range" name="review[ratings]" id="customRange1" min="1" max="5">
 
-          <label for="review">Review</label>
-          <textarea name="review[body]" id="review" required></textarea>
-
+        <div class="mb-3">
+         
+          <fieldset class="starability-basic">
+            <legend><h3>Review:</h3></legend>
+            <input type="radio" id="no-rate" class="input-no-rate" name="review[ratings]" value="0" checked aria-label="No rating." />
+            <input type="radio" id="second-rate1" name="review[ratings]" value="1" />
+            <label for="second-rate1" title="Terrible">1 star</label>
+            <input type="radio" id="second-rate2" name="review[ratings]" value="2" />
+            <label for="second-rate2" title="Not good">2 stars</label>
+            <input type="radio" id="second-rate3" name="review[ratings]" value="3" />
+            <label for="second-rate3" title="Average">3 stars</label>
+            <input type="radio" id="second-rate4" name="review[ratings]" value="4" />
+            <label for="second-rate4" title="Very good">4 stars</label>
+            <input type="radio" id="second-rate5" name="review[ratings]" value="5" />
+            <label for="second-rate5" title="Amazing">5 stars</label>
+          </fieldset>
         </div>
+
+        <div class="mb-3">
+          <label for="review" class="form-label">Review</label>
+          <textarea class="form-control" name="review[body]" id="review" required></textarea>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+      
         <button class="btn btn-info">Post</button>
       </form>
-
+<% } %>
 
 
       <% for(r of camp.reviews){ %>
         <div class="card mb-3 ">
           <div class="card-body">
-            <h5 class="card-title">Ratings:<%=r.ratings %>
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted">by <%= r.author.username %>
-            </h6>
-
-            <p class="card-text"><%=r.body %>
+            
+            <h6 class="card-subtitle mb-2 text-muted"><%= r.author.username %>
+            </h6>  
+  <p class="starability-result" data-rating="<%= r.ratings %>">
+    Rated: <%= r.ratings %>
+  </p>
+        
+            <p class="card-text">Review: <%=r.body %>
             </p>
 
             <% if(current_user && r.author.equals(current_user)) {%>
