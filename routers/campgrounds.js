@@ -10,10 +10,10 @@ const { storage }= require('../cloudinary')
 const upload = multer({storage});
 // const upload = multer({ dest: 'new/' });
 
-router.get('/new', campgrounds.make_new)
+router.get('/new',islogedin, campgrounds.make_new)
 router.route('/')
     .get(catchasync(campgrounds.index))
-    .post(islogedin,upload.array('images'), validatedata, catchasync(campgrounds.newcamp))
+    .post(upload.array('images'), validatedata, catchasync(campgrounds.newcamp))
 
   
 
