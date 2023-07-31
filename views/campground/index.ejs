@@ -8,7 +8,12 @@
                 <div class="col-md-4">
                     <img class="img-fluid" alt="" src="<%=c.images[0].url%>">
                 </div>
-                <% } %>
+                <% } else{%>
+                    <div class="col-md-4 d-flex align-items-center justify-content-center">
+                        <h6>No image provided</h6>
+                     </div>
+                     
+                    <% } %>
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-tittle">
